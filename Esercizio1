@@ -1,0 +1,30 @@
+int isTreBil=1;
+
+void checkTreBil(PNode u,int currentLength, int pathLength){
+    if(u==nullptr){
+        return;
+    }
+    if(u->left==nullptr || u->right==nullptr){
+        if(abs(currentLength-pathLength)>3){
+        isTreBil=0;
+        return;
+        }
+    }
+    checkTreBil(u->left,currentLength+1,pathLength);
+    checkTreBil(u->right,currentLength+1,pathLength);
+  
+}
+
+bool treBil(PNode u){
+    if(u==nullptr){
+        return isTreBil;
+    }
+    PNode current = u;
+    int length=0;
+    while(current->left!=nullptr && current->right!=nullptr){
+        length++;
+        current=current->left;
+    }
+    checkTreBil(u,0,length);
+    return isTreBil;
+}
