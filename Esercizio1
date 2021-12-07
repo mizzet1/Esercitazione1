@@ -1,42 +1,27 @@
-int isTreBil=1;
-int pathLength=-1;
-
-void longestPath(PNode u,int currentLength){
-    if(u==nullptr){
-        return;
-    }
-    if(u->left==nullptr && u->right==nullptr){
-        if(pathLength==-1){
-        pathLength=currentLength;
-        }
-        else{
-            if(currentLength>pathLength){
-                pathLength=currentLength;
-            }
-        }
-    }
-    longestPath(u->left,currentLength+1);
-    longestPath(u->right,currentLength+1);
-}
-
-void checkTreBil(PNode u,int currentLength){
-    if(u==nullptr){
+void checkTreBil(PNode u,int currentLength,int* lengthCheck,int* flag){
+    if(u==nullptr || *flag==0){
         return;
     }
     if(u->left==nullptr || u->right==nullptr){
-        if(abs(pathLength-currentLength)>3){
-        isTreBil=0;
+        if(*lengthCheck==-1){
+            *lengthCheck=currentLength;
         }
+        else{
+            if(currentLength>*lengthCheck+3){
+                 *flag=0;
+            }  
+        } 
     }
-    checkTreBil(u->left,currentLength+1);
-    checkTreBil(u->right,currentLength+1);
+    checkTreBil(u->left,currentLength+1,lengthCheck,flag);
+    checkTreBil(u->right,currentLength+1,lengthCheck,flag);
 }
 
 bool treBil(PNode u){
     if(u==nullptr){
-        return isTreBil;
+        return true;
     }
-    longestPath(u,0);
-    checkTreBil(u,0);
-    return isTreBil;
+    int flag=1;
+    int lengthCheck=-1;
+    checkTreBil(u,0,&lengthCheck,&flag);
+    return flag;
 }
